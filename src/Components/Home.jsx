@@ -68,10 +68,12 @@ const Home = () => {
 
   const showWinPageHandler = () => {
     setOnWin(!onWin);
+    newQsnHandler();
   };
 
   const showLostPageHandler = () => {
     setOnLose(!onLose);
+    window.location.reload();
   };
 
   return (
@@ -80,14 +82,14 @@ const Home = () => {
       {onWin && (
         <GreetPage
           greetText={"Congratulations!! You won"}
-          amount={steps[index]}
+          amount={steps[index - 1]}
           toggleWin={showWinPageHandler}
         />
       )}
       {onLose && (
         <GreetPage
           greetText={"Sorry!! You lost this time."}
-          amount={steps[index]}
+          amount={steps[index - 1]}
           toggleWin={showLostPageHandler}
         />
       )}
@@ -130,7 +132,7 @@ const Home = () => {
         </div>
         <div className="grid-right self-stretch p-3">
           <ul className="text-white text-center flex flex-col">
-            {steps.map((step, i) => {
+            {steps.reverse().map((step, i) => {
               return (
                 <li
                   className={

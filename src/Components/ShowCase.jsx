@@ -9,17 +9,17 @@ const ShowCase = ({
 }) => {
   return (
     <div className="main-action-page bg-white grid grid-cols-1fr1fr gap-4 p-4 items-center">
-      <div className="showcase p-4 bg-sky-500 rounded-xl grid grid-cols-1fr5fr text-right">
-        <p className="text-white text-xl">NEXT</p>
-        <p className="text-xl text-white">{nextStep}</p>
+      <div className="showcase p-4 bg-sky-500 rounded-xl grid grid-cols-1fr5fr">
+        <p className="text-white text-xl text-left">NEXT</p>
+        <p className="text-xl text-white text-right">{nextStep}</p>
       </div>
-      <div className="showcase p-4 bg-red-400 rounded-xl grid grid-cols-1fr5fr text-right">
-        <p className="text-white text-xl">LOSE</p>
-        <p className="text-xl text-white">{prevStep}</p>
+      <div className="showcase p-4 bg-red-400 rounded-xl grid grid-cols-1fr5fr">
+        <p className="text-white text-xl text-left">LOSE</p>
+        <p className="text-xl text-white text-right">{prevStep}</p>
       </div>
-      <div className="showcase p-4 bg-white border-2 border-black rounded-xl grid grid-cols-1fr5fr text-right">
-        <p className="text-xl">CURRENT</p>
-        <p className="text-xl">{currentStep}</p>
+      <div className="showcase p-4 bg-white border-2 border-green-500 rounded-xl grid grid-cols-1fr5fr">
+        <p className="text-xl text-left text-green-500">WIN</p>
+        <p className="text-xl text-right text-green-500">{currentStep}</p>
       </div>
       <div>
         <button
@@ -27,7 +27,7 @@ const ShowCase = ({
           disabled={gameStart}
           onClick={newQuestion}
         >
-          Next Question
+          SWIPE QUESTION
         </button>
       </div>
     </div>
