@@ -85,16 +85,18 @@ const Functions = () => {
   // // };
 
   return (
-    <div className="min-h-[100vh] rounded-md">
+    <div className="h-[100vh] rounded-md">
       <div className="action-bar bg-slate-800 h-24 p-4 flex justify-center gap-6 disabled:bg-slate-400">
         <button
-          className="primary-btn disabled:bg-slate-400 disabled:text-white"
+          className="primary-btn bg-green-500 disabled:bg-slate-400 disabled:text-white"
           onClick={newQsnHandler}
           disabled={gameStart}
         >
           Start Game
         </button>
-        <button className="primary-btn">Take Break</button>
+        <button className="primary-btn text-black bg-slate-200">
+          Take Break
+        </button>
         <button className="red-btn">Quit Game</button>
       </div>
 

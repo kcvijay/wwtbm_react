@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 .primary-btn {
-  @apply w-full bg-gray-100   text-gray-500 shadow-md rounded-full hover:bg-white hover:text-violet-500 transition-all;
+  @apply w-full shadow-md rounded-full hover:bg-white hover:text-black transition-all;
 }
 
 .purple-btn {
-  @apply w-full bg-purple-400 border-2 border-purple-400 text-white shadow-md rounded-full hover:bg-white hover:text-purple-400 transition-all duration-300;
+  @apply w-full bg-purple-400 border-2 border-purple-400 text-white shadow-md rounded-full hover:bg-white hover:text-black transition-all duration-300;
 }
 
 .red-btn {
@@ -26,12 +26,11 @@ textarea {
   @apply p-2 border-2 border-violet-400 rounded-md h-80;
 }
 
-.active {
-  @apply bg-purple-500 text-white;
-}
-
 @layer utilities {
-  .clip-path-arrow {
-    clip-path: polygon(15% 0, 85% 0, 100% 50%, 85% 100%, 15% 100%, 0% 50%);
+  .trapezoid {
+    clip-path: polygon(0 0, 95% 0, 100% 100%, 5% 100%);
+  }
+  .arrow {
+    clip-path: polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0% 50%);
   }
 }
