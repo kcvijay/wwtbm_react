@@ -5,6 +5,7 @@ import QuestionOptions from "./QuestionOptions";
 import ShowCase from "./ShowCase";
 import BreakPage from "./BreakPage";
 import GreetPage from "./GreetPage";
+import Header from "./Header";
 
 const Home = () => {
   const steps = [
@@ -17,18 +18,11 @@ const Home = () => {
   const [askedQuestions, setAskedQuestions] = useState([]);
   const [index, setIndex] = useState(0);
   const [currentStep, setCurrentStep] = useState(steps[index]);
-  const [correctQsn, setCorrectQuestion] = useState("");
+  const [nextStep, setNextStep] = useState(steps[index + 1]);
 
   const [onBreak, setOnBreak] = useState(false);
   const [onWin, setOnWin] = useState(false);
   const [onLose, setOnLose] = useState(false);
-
-  // const [chosenOption, setChosenOption] = useState("");
-  // const [step, setStep] = useState();
-  // const [questionList, setQuestionList] = useState([]);
-  // const [wonAmount, setWonAmount] = useState();
-  // const [showEndScreen, setShowEndScreen] = useState(false);
-  // const showedQuestions = [];
 
   useEffect(() => {
     axios
@@ -93,29 +87,17 @@ const Home = () => {
           toggleWin={showLostPageHandler}
         />
       )}
-      <div className="action-bar bg-slate-800 h-24 p-4 flex justify-center gap-6 disabled:bg-slate-400 rounded-full">
-        <button
-          className="primary-btn bg-green-500 disabled:bg-slate-400"
-          onClick={newQsnHandler}
-          disabled={gameStart}
-        >
-          Start Game
-        </button>
-        <button
-          className="primary-btn text-black bg-slate-200"
-          onClick={showBreakPageHandler}
-        >
-          Take Break
-        </button>
-        <button className="red-btn">Quit Game</button>
-      </div>
+      <Header
+        newQsnHandler={newQsnHandler}
+        gameStart={gameStart}
+        showBreakPageHandler={showBreakPageHandler}
+      />
 
       <div className="main-page grid grid-cols-3fr1fr gap-4">
         <div className="grid-left bg-slate-800 flex flex-col gap-4 rounded-xl">
           <ShowCase
-            nextStep={steps[index + 1]}
-            prevStep={steps[index - 1]}
-            currentStep={steps[index]}
+            nextStep={nextStep}
+            currentStep={currentStep}
             gameStart={!gameStart}
             newQuestion={newQsnHandler}
           />
@@ -152,34 +134,3 @@ const Home = () => {
 };
 
 export default Home;
-
-// const wrongOptionHandler = () => {
-//   setStep(step);
-//   gameEndHandler();
-// };
-// const correctOptionHandler = () => {
-//   setStep(steps + 1);
-//   startGameHandler();
-// };
-
-// const gameEndHandler = () => {
-//   setShowEndScreen(true);
-// };
-
-// // const setShowEndScreen = () => {
-// //   console.log("");
-// // };
-
-// // clickOptionHandler();
-
-// // const quitGameHandler = () => {
-// //   setStep(step);
-// //   gameEndHandler();
-// // };
-
-// // const restartGameHandler = () => {
-// //   setStep(0);
-// //   setData([]);
-// //   setChosenOption("");
-// //   setShowEndScreen(false);
-// // };
