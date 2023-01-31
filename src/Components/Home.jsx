@@ -6,6 +6,7 @@ import ShowCase from "./ShowCase";
 import BreakPage from "./BreakPage";
 import GreetPage from "./GreetPage";
 import Header from "./Header";
+import Million from "./Million";
 
 const Home = () => {
   const steps = [
@@ -13,16 +14,16 @@ const Home = () => {
   ];
 
   const [gameStart, setGameStart] = useState(false);
+  const [disableSwipe, setDisableSwipe] = useState(false);
   const [data, setData] = useState([]);
   const [question, setQuestion] = useState({});
   const [askedQuestions, setAskedQuestions] = useState([]);
   const [index, setIndex] = useState(0);
-  const [currentStep, setCurrentStep] = useState(steps[index]);
-  const [nextStep, setNextStep] = useState(steps[index + 1]);
-
+  /**/
   const [onBreak, setOnBreak] = useState(false);
   const [onWin, setOnWin] = useState(false);
   const [onLose, setOnLose] = useState(false);
+  const [onMillion, setOnMillion] = useState(false);
 
   useEffect(() => {
     axios
@@ -35,8 +36,9 @@ const Home = () => {
     return qsnIndex;
   };
 
-  const newQsnHandler = (i) => {
+  const newQsnHandler = () => {
     setGameStart(true);
+    setDisableSwipe(!disableSwipe);
     let newQuestion = makeRandQuestion();
     if (!askedQuestions.includes(newQuestion)) {
       setAskedQuestions((current) => [...current, newQuestion]);
@@ -46,12 +48,16 @@ const Home = () => {
     }
   };
 
+  const swipeQsnHandler = () => {
+    newQsnHandler();
+    setDisableSwipe(!disableSwipe);
+  };
+
   const answersClickHandler = (e) => {
     if (e.target.value !== question.answer) {
       setOnLose(true);
     } else {
-      setIndex((prev) => (prev + 1) % steps.length);
-      setCurrentStep(steps[index]);
+      setIndex((index) => (index + 1) % steps.length);
       showWinPageHandler();
     }
   };
@@ -61,12 +67,21 @@ const Home = () => {
   };
 
   const showWinPageHandler = () => {
-    setOnWin(!onWin);
-    newQsnHandler();
+    if (index === 11) {
+      setOnMillion(true);
+    } else {
+      setOnWin(!onWin);
+      newQsnHandler();
+    }
   };
 
   const showLostPageHandler = () => {
     setOnLose(!onLose);
+    window.location.reload();
+  };
+
+  const showWinMillionPageHandler = () => {
+    setOnMillion(!onMillion);
     window.location.reload();
   };
 
@@ -87,6 +102,7 @@ const Home = () => {
           toggleWin={showLostPageHandler}
         />
       )}
+      {onMillion && <Million toggleMillion={showWinMillionPageHandler} />}
       <Header
         newQsnHandler={newQsnHandler}
         gameStart={gameStart}
@@ -96,10 +112,11 @@ const Home = () => {
       <div className="main-page grid grid-cols-3fr1fr gap-4">
         <div className="grid-left bg-slate-800 flex flex-col gap-4 rounded-xl">
           <ShowCase
-            nextStep={nextStep}
-            currentStep={currentStep}
-            gameStart={!gameStart}
-            newQuestion={newQsnHandler}
+            currentStep={steps[index]}
+            nextStep={steps[index + 1]}
+            prevStep={steps[index - 1]}
+            disableSwipe={!disableSwipe}
+            newQuestion={swipeQsnHandler}
           />
           {gameStart && (
             <QuestionOptions

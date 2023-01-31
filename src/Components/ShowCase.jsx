@@ -4,7 +4,7 @@ const ShowCase = ({
   nextStep,
   prevStep,
   currentStep,
-  gameStart,
+  disableSwipe,
   newQuestion,
 }) => {
   return (
@@ -25,7 +25,7 @@ const ShowCase = ({
       <div>
         <button
           className="purple-btn p-4 disabled:bg-purple-100 disabled:border-none disabled:hover:text-white"
-          disabled={gameStart}
+          disabled={disableSwipe}
           onClick={newQuestion}
         >
           SWIPE QUESTION
