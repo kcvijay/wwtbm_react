@@ -15,7 +15,7 @@ const QuestionOptions = ({
     </p>
     <div className="md:grid md:grid-cols-2 md:gap-4 mt-12">
       <button
-        className="block border-2 text-white py-4 px-5 text-xl text-left capitalize rounded-xl shadow-md"
+        className="block border-2 text-white py-4 px-5 text-xl text-left capitalize rounded-xl shadow-md hover:bg-white hover:text-slate-800 transition-all duration-300"
         key={optionA}
         value="A"
         onClick={clickAnswer}
@@ -23,7 +23,7 @@ const QuestionOptions = ({
         A.&nbsp;{optionA}
       </button>
       <button
-        className="block border-2 border-white text-white py-4 px-5 text-xl text-left capitalize shadow-md rounded-xl"
+        className="block border-2 border-white text-white py-4 px-5 text-xl text-left capitalize shadow-md rounded-xl hover:bg-white hover:text-slate-800 transition-all duration-300"
         key={optionB}
         value="B"
         onClick={clickAnswer}
@@ -31,7 +31,7 @@ const QuestionOptions = ({
         B.&nbsp;{optionB}
       </button>
       <button
-        className="block border-2 border-white text-white py-4 px-5 text-xl text-left capitalize rounded-xl shadow-md"
+        className="block border-2 border-white text-white py-4 px-5 text-xl text-left capitalize rounded-xl shadow-md hover:bg-white hover:text-slate-800 transition-all duration-300"
         key={optionC}
         value="C"
         onClick={clickAnswer}
@@ -39,7 +39,7 @@ const QuestionOptions = ({
         C. &nbsp;{optionC}
       </button>
       <button
-        className="block border-2 border-white text-white py-4 px-5 text-xl text-left capitalize rounded-xl shadow-md"
+        className="block border-2 border-white text-white py-4 px-5 text-xl text-left capitalize rounded-xl shadow-md hover:bg-white hover:text-slate-800 transition-all duration-300"
         key={optionD}
         value="D"
         onClick={clickAnswer}

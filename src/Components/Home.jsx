@@ -58,7 +58,11 @@ const Home = () => {
       setOnLose(true);
     } else {
       setIndex((index) => (index + 1) % steps.length);
-      showWinPageHandler();
+      if (index < 10) {
+        showWinPageHandler();
+      } else {
+        setOnMillion(true);
+      }
     }
   };
 
@@ -67,13 +71,11 @@ const Home = () => {
   };
 
   const showWinPageHandler = () => {
-    if (index === 11) {
-      setOnMillion(true);
-    } else {
-      setOnWin(!onWin);
-      newQsnHandler();
-    }
+    setOnWin(!onWin);
+    newQsnHandler();
   };
+
+  console.log(index);
 
   const showLostPageHandler = () => {
     setOnLose(!onLose);
