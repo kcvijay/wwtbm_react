@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+import QuestionOptions from "./Components/questionOptions";
+import ShowCase from "./Components/ShowCase";
+
 const Functions = () => {
   const steps = [
     100, 500, 1000, 2500, 10000, 20000, 50000, 100000, 250000, 500000, 1000000,
@@ -11,9 +14,9 @@ const Functions = () => {
 
   const [gameStart, setGameStart] = useState(false);
   const [data, setData] = useState([]);
-  const [question, setQuestion] = useState([]);
+  const [question, setQuestion] = useState({});
+  const [askedQuestions, setAskedQuestions] = useState([]);
   const [currentStep, setCurrentStep] = useState(steps[0]);
-  const [currentQsn, setCurrentQsn] = useState({});
 
   // const [chosenOption, setChosenOption] = useState("");
   // const [step, setStep] = useState();
@@ -21,7 +24,6 @@ const Functions = () => {
   // const [wonAmount, setWonAmount] = useState();
   // const [showEndScreen, setShowEndScreen] = useState(false);
   // const showedQuestions = [];
-  const askedQuestions = [];
 
   useEffect(() => {
     axios
@@ -38,28 +40,18 @@ const Functions = () => {
     setGameStart(true);
     let newQuestion = makeRandQuestion();
     if (!askedQuestions.includes(newQuestion)) {
-      askedQuestions.push(newQuestion);
+      setAskedQuestions((current) => [...current, newQuestion]);
       setQuestion(data[newQuestion]);
     } else {
       newQsnHandler();
     }
   };
 
-  // const startGameHandler = () => {
-  //   const questionIndex = Math.floor(Math.random() * data.length);
-  //   setQuestion(data[questionIndex]);
-  // };
-
-  // const startGameHandler = () => {
-  //   const question = Math.floor(Math.random() * 100);
-  //   setQuestionList(question);
-
-  //   if (!questionList.includes(question)) {
-  //     axios
-  //       .get(`http://localhost:3300/questions/${question}`)
-  //       .then((res) => setData(res.data));
-  //   }
-  // };
+  const answersClickHandler = (e) => {
+    if (e.target.value !== question.answer) {
+      return;
+    } else newQsnHandler();
+  };
 
   // const wrongOptionHandler = () => {
   //   setStep(step);
@@ -92,24 +84,14 @@ const Functions = () => {
   // //   setShowEndScreen(false);
   // // };
 
-  // const answerClickHandler = (e) => {
-  //   if (question.correctIndex !== e.target.value) {
-  //     alert("Sorry, the answer is wrong.");
-  //   } else {
-  //     alert("Congratulations. You answered right.");
-  //     setCurrentStep((prevIndex) => {
-  //       if (prevIndex > 0) {
-  //         return prevIndex + 1;
-  //       }
-  //     });
-  //     console.log(currentStep);
-  //   }
-  // };
-
   return (
     <div className="min-h-[100vh] rounded-md">
-      <div className="action-bar bg-cyan-600 h-24 p-4 flex justify-center gap-6">
-        <button className="primary-btn" onClick={newQsnHandler}>
+      <div className="action-bar bg-slate-800 h-24 p-4 flex justify-center gap-6 disabled:bg-slate-400">
+        <button
+          className="primary-btn disabled:bg-slate-400 disabled:text-white"
+          onClick={newQsnHandler}
+          disabled={gameStart}
+        >
           Start Game
         </button>
         <button className="primary-btn">Take Break</button>
@@ -117,56 +99,17 @@ const Functions = () => {
       </div>
 
       <div className="main-page grid grid-cols-2fr1fr">
-        <div className="grid-left bg-emerald-600 flex flex-col gap-4">
-          <div className="main-action-page  min-h-[25%] bg-white grid grid-cols-1fr1fr gap-4 p-4 items-center">
-            <div className="showcase p-4 bg-slate-200 rounded-xl grid grid-cols-1fr5fr text-center">
-              <p className="text-green-500 text-xl">WIN</p>
-              <p className="text-xl">100,000</p>
-            </div>
-            <div className="showcase p-4 bg-slate-200 rounded-xl grid grid-cols-1fr5fr text-center">
-              <p className="text-red-500 text-xl">LOOSE</p>
-              <p className="text-xl">25,000</p>
-            </div>
-            <div className="showcase p-4 bg-slate-200 rounded-xl grid grid-cols-1fr5fr text-center">
-              <p className="text-purple-500 text-xl">QUIT</p>
-              <p className="text-xl">25,000</p>
-            </div>
-            <div>
-              <button className="purple-btn p-4">Next Question</button>
-            </div>
-          </div>
+        <div className="grid-left bg-slate-800 flex flex-col gap-4">
+          <ShowCase gameStart={!gameStart} newQuestion={newQsnHandler} />
           {gameStart && (
-            <div className="question-section px-6 py-12">
-              <p className="border border-white p-4 h-[100px] text-white text-center text-xl rounded-full">
-                {question.question}
-              </p>
-              <div className="grid grid-cols-2 gap-3 my-8">
-                <button
-                  className="block border-2 border-white text-white py-4 px-5 text-xl rounded-full shadow-md"
-                  key={question.A}
-                >
-                  A.&nbsp;{question.A}
-                </button>
-                <button
-                  className="block border-2 border-white text-white py-4 px-5 text-xl rounded-full shadow-md"
-                  key={question.B}
-                >
-                  B.&nbsp;{question.B}
-                </button>
-                <button
-                  className="block border-2 border-white text-white py-4 px-5 text-xl rounded-full shadow-md"
-                  key={question.C}
-                >
-                  C. &nbsp;{question.C}
-                </button>
-                <button
-                  className="block border-2 border-white text-white py-4 px-5 text-xl rounded-full shadow-md"
-                  key={question.D}
-                >
-                  D.&nbsp;{question.D}
-                </button>
-              </div>
-            </div>
+            <QuestionOptions
+              question={question.question}
+              optionA={question.A}
+              optionB={question.B}
+              optionC={question.C}
+              optionD={question.D}
+              clickAnswer={answersClickHandler}
+            />
           )}
         </div>
         <div className="grid-right bg-slate-400 p-4">
