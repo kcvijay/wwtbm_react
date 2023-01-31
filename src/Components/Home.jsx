@@ -4,6 +4,7 @@ import axios from "axios";
 import QuestionOptions from "./QuestionOptions";
 import ShowCase from "./ShowCase";
 import BreakPage from "./BreakPage";
+import GreetPage from "./GreetPage";
 
 const Home = () => {
   const steps = [
@@ -19,6 +20,8 @@ const Home = () => {
   const [correctQsn, setCorrectQuestion] = useState("");
 
   const [onBreak, setOnBreak] = useState(false);
+  const [onWin, setOnWin] = useState(false);
+  const [onLose, setOnLose] = useState(false);
 
   // const [chosenOption, setChosenOption] = useState("");
   // const [step, setStep] = useState();
@@ -32,10 +35,6 @@ const Home = () => {
       .get("http://localhost:3300/questions")
       .then((res) => setData(res.data));
   }, []);
-
-  const nextStepHandler = (i) => {
-    setIndex((prevIndex) => (prevIndex + 1) % steps.length);
-  };
 
   const makeRandQuestion = () => {
     const qsnIndex = Math.floor(Math.random() * data.length);
@@ -53,12 +52,13 @@ const Home = () => {
     }
   };
 
-  const answersClickHandler = (e, i) => {
+  const answersClickHandler = (e) => {
     if (e.target.value !== question.answer) {
-      return;
+      setOnLose(true);
     } else {
-      newQsnHandler();
-      nextStepHandler(i);
+      setIndex((prev) => (prev + 1) % steps.length);
+      setCurrentStep(steps[index]);
+      showWinPageHandler();
     }
   };
 
@@ -66,9 +66,31 @@ const Home = () => {
     setOnBreak(!onBreak);
   };
 
+  const showWinPageHandler = () => {
+    setOnWin(!onWin);
+  };
+
+  const showLostPageHandler = () => {
+    setOnLose(!onLose);
+  };
+
   return (
     <div className="min-h-[100vh] my-[20px] rounded-md relative">
       {onBreak && <BreakPage toggleBreak={showBreakPageHandler} />}
+      {onWin && (
+        <GreetPage
+          greetText={"Congratulations!! You won"}
+          amount={steps[index]}
+          toggleWin={showWinPageHandler}
+        />
+      )}
+      {onLose && (
+        <GreetPage
+          greetText={"Sorry!! You lost this time."}
+          amount={steps[index]}
+          toggleWin={showLostPageHandler}
+        />
+      )}
       <div className="action-bar bg-slate-800 h-24 p-4 flex justify-center gap-6 disabled:bg-slate-400 rounded-full">
         <button
           className="primary-btn bg-green-500 disabled:bg-slate-400"
@@ -88,7 +110,13 @@ const Home = () => {
 
       <div className="main-page grid grid-cols-3fr1fr gap-4">
         <div className="grid-left bg-slate-800 flex flex-col gap-4 rounded-xl">
-          <ShowCase gameStart={!gameStart} newQuestion={newQsnHandler} />
+          <ShowCase
+            nextStep={steps[index + 1]}
+            prevStep={steps[index - 1]}
+            currentStep={steps[index]}
+            gameStart={!gameStart}
+            newQuestion={newQsnHandler}
+          />
           {gameStart && (
             <QuestionOptions
               question={question.question}
@@ -106,7 +134,7 @@ const Home = () => {
               return (
                 <li
                   className={
-                    "text-md p-2 my-1 bg-white text-slate-800 border-2 border-slate-800 rounded-lg shadow-sm "
+                    "text-md p-2 my-1 bg-white text-slate-800 border-2 border-slate-800 rounded-lg shadow-sm active:bg-white active:text-slate-800"
                   }
                   key={step}
                 >
